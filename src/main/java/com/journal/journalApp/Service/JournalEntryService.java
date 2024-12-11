@@ -139,7 +139,6 @@ public class JournalEntryService {
         }
         catch (Exception e){
             e.printStackTrace();
-            System.out.println("hello");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
