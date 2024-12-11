@@ -1,0 +1,56 @@
+<configuration>
+
+    <!-- Define the pattern for log messages (same pattern as before) -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} - %msg%n"/>
+
+    <!-- File appender for saving logs to a file -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <!-- Specify the log file location -->
+        <file>logs/application.log</file>
+        <encoder>
+            <!-- Define log message format -->
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console appender for logging to the console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}][%-5level][%thread]%C{1}.%M  -SessionID: %X{sessionId}, UniqueID: %X{uniqueIdentifier}, OperationID: %X{operationId} -MDCData: %X{mdcData} -Trace: %X{traceId:-}, Span: %X{spanId:-},ApprovalRequestCode: %X{requestCode:-}, Class: %logger{36}   -Message: %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger configuration -->
+    <root level="INFO">
+        <!-- Reference the console and file appenders -->
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!-- Configure log level for a specific package or class -->
+    <logger name="com.example.myapp" level="DEBUG">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Example: Set the log level for a specific class or package to ERROR -->
+    <logger name="com.example.myapp.service" level="ERROR">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- Example: Set the log level for a specific class to TRACE -->
+    <logger name="com.example.myapp.controller" level="TRACE">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- Example: Set the log level for Spring Boot internal logs -->
+    <logger name="org.springframework.boot" level="WARN">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+</configuration>
