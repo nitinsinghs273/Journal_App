@@ -21,6 +21,9 @@ public class User {
     @Column(unique = true, nullable = false) // Ensuring username is unique and non-null
     private String username;
 
+    @Column(nullable = false)
+    private String city;
+
     @Column(nullable = false) // Ensuring password is non-null
     private String password;
 

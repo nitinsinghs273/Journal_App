@@ -2,7 +2,7 @@ spring:
   application:
     name: journalApp
   datasource:
-    url: jdbc:mysql://localhost:3306/Journals_db
+    url: jdbc:mysql://localhost:3306/journals_db
     username: root
     password: M0use@2001
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,6 +12,5 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
 
 
