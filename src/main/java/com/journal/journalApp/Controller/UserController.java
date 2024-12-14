@@ -17,9 +17,10 @@ public class UserController {
     @Autowired private UserService userService;
 
     @GetMapping
-    public ResponseEntity<String>GreetUser(){
-        return UserService.GreetUser();
+    public ResponseEntity<String> GreetUser(){
+        return userService.GreetUser();
     }
+
     @GetMapping("/get-user-details")
     public ResponseEntity<User>getUserDetails(){
         return userService.getUserDetails();

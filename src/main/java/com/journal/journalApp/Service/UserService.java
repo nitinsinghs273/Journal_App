@@ -4,8 +4,11 @@ package com.journal.journalApp.Service;
 import com.journal.journalApp.Entities.User;
 
 import com.journal.journalApp.RepositoryDao.UserRepository;
+import com.journal.journalApp.dto.WheatherApiResponseDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +31,15 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private  WheatherService wheatherService;
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public static ResponseEntity<String> GreetUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            return new ResponseEntity<>("Hello, " + username, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Hello, Guest", HttpStatus.OK);
-        }
-    }
+
+    ///pasword:"U95jXYNptP@Zfqd"
+
 
 
 
@@ -46,7 +47,7 @@ public class UserService {
     public ResponseEntity<User> createUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword())); // encode password before saving it to the database.
-            user.setRoles(Arrays.asList("USER"));
+            user.setRoles(Arrays.asList("ADMIN"));
             userRepository.save(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -71,6 +72,18 @@ public class UserService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    public ResponseEntity<String> GreetUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            User user = userRepository.findByUsername(username);
+            WheatherApiResponseDTO response =  wheatherService.getWeather(user.getCity()).getBody();
+            return new ResponseEntity<>("Hello, " + username + "Weather in " + user.getCity() + " but feels like" + response.getCurrent().feelslike , HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Hello, Guest Weather is Nice!", HttpStatus.OK);
+        }
     }
 
     public ResponseEntity<User> getUserByName(String username) {
@@ -118,6 +131,9 @@ public class UserService {
                 // Update and encode the password only if it's not blank
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isBlank() && !updatedUser.getPassword().equals(existingUser.getPassword())) {
                     existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                }
+                if (updatedUser.getCity() != null && !updatedUser.getCity().isBlank() && !updatedUser.getCity().equals(existingUser.getCity())) {
+                    existingUser.setCity(updatedUser.getCity());
                 }
 
 
