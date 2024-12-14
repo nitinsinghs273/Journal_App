@@ -34,6 +34,10 @@ public class WeatherService {
             // Log the exception (you can use a logger in production)
             System.err.println("Error while fetching weather data: " + e.getMessage());
 
+
+
+
+
             // Return an INTERNAL_SERVER_ERROR status with an error message
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
