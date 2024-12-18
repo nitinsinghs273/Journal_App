@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public")
-public class PublicUser {
+public class PublicUserController {
     @Autowired
     private UserService userService;
     @PostMapping("/create-user")

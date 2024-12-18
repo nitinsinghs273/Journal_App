@@ -42,5 +42,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/user-for-sentiment")
+    public ResponseEntity<List<User>> getUserForSentiment(){
+        return userService.getUserForSentiment();
+    }
+
+
 
 }

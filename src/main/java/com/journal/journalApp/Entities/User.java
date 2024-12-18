@@ -21,6 +21,8 @@ public class User {
     @Column(unique = true, nullable = false) // Ensuring username is unique and non-null
     private String username;
 
+    private String email;
+    private boolean sentimentalAnalysis;
     @Column(nullable = false)
     private String city;
 

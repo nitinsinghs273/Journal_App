@@ -47,7 +47,7 @@ public class UserService {
     public ResponseEntity<User> createUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword())); // encode password before saving it to the database.
-            user.setRoles(Arrays.asList("ADMIN"));
+            user.setRoles(Arrays.asList("USER"));
             userRepository.save(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -207,7 +207,7 @@ public class UserService {
     public ResponseEntity<User> saveAdmin(User admin) {
         try {
             admin.setPassword(passwordEncoder.encode(admin.getPassword())); // Encode password before saving
-            admin.setRoles(Arrays.asList("ADMIN", "USER")); // Set roles as a list
+            admin.setRoles(Arrays.asList("ADMIN","USER")); // Set roles as a list
             userRepository.save(admin);
             return new ResponseEntity<>(admin, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -233,5 +233,10 @@ public class UserService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    public ResponseEntity<List<User>> getUserForSentiment() {
+        List<User>userList = userRepository.findUserWhoSelectedSA();
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }

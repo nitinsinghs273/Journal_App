@@ -3,9 +3,11 @@ package com.journal.journalApp.Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.journal.journalApp.Enum.Sentiment;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -26,7 +28,8 @@ public class JournalEntry {
 
     private String author;
     private String content;
-    private String date;
+    private LocalDateTime date;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
