@@ -1,9 +1,9 @@
-# Ignore application profile files
-application.properties
-application.yml
-application-dev.yml
-application-prod.yml
-bootstrap.yml
+# Ignore application profile files in src/main/resources
+src/main/resources/application.yml
+src/main/resources/application-dev.yml
+src/main/resources/application-prod.yml
+src/main/resources/bootstrap.yml
+src/main/resources/*.yml
 
 # Ignore environment files
 .env
