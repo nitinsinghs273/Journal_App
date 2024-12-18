@@ -33,7 +33,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private  WheatherService wheatherService;
+    private  WeatherService weatherService;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -79,8 +79,8 @@ public class UserService {
         if (authentication.isAuthenticated()) {
             String username = authentication.getName();
             User user = userRepository.findByUsername(username);
-            WheatherApiResponseDTO response =  wheatherService.getWeather(user.getCity()).getBody();
-            return new ResponseEntity<>("Hello, " + username + "Weather in " + user.getCity() + " but feels like" + response.getCurrent().feelslike , HttpStatus.OK);
+            WheatherApiResponseDTO response =  weatherService.getWeather(user.getCity()).getBody();
+            return new ResponseEntity<>("Hello, " + username + " Weather in " + user.getCity() + " is " +  response.getCurrent().getTemperature() + " degree celsius but feels like " + response.getCurrent().feelslike , HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Hello, Guest Weather is Nice!", HttpStatus.OK);
         }
