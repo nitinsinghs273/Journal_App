@@ -1,26 +1,37 @@
+package com.journal.journalApp.Service;
+
+
+import com.journal.journalApp.constants.ApplicationConstants;
 import com.journal.journalApp.dto.WheatherApiResponseDTO;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+
 public class WeatherService {
 
-    private final String weatherURI = "https://api.weatherstack.com/current?access_key=KEY&query=CITY";
-    private final String apiKey = "YOUR_API_KEY";  // Replace with your actual API key
-    private final RestTemplate defaultClient;
+    private final String weatherURI = "http://api.weatherstack.com/current?access_key=KEY&query=CITY";
+    private final RestClient restClient;
 
-    public WeatherService(RestTemplate defaultClient) {
-        this.defaultClient = defaultClient;
+    public WeatherService(RestClient restClient) {
+        this.restClient = restClient;
     }
 
+
     public ResponseEntity<WheatherApiResponseDTO> getWeather(String city) {
-        String finalAPI = weatherURI.replace("KEY", apiKey).replace("CITY", city);
+        String finalAPI = weatherURI.replace("KEY", ApplicationConstants.API_ACCESS_KEY).replace("CITY", city);
 
         try {
             // Make the GET request to the weather API
-            ResponseEntity<WheatherApiResponseDTO> responseEntity = defaultClient.getForEntity(finalAPI, WheatherApiResponseDTO.class);
+            ResponseEntity<WheatherApiResponseDTO> responseEntity = restClient.get()
+                    .uri(finalAPI)
+                    .retrieve()
+                    .toEntity(WheatherApiResponseDTO.class);
 
             // Check if the response is empty or null
             if (responseEntity == null || responseEntity.getBody() == null) {
